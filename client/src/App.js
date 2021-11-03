@@ -1,6 +1,6 @@
 import './App.css';
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
-import Home from "./Pages/Home/Home";
+import Home from "./Pages/Home/Home/Home";
 
 function App() {
     return (
