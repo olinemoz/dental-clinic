@@ -1,9 +1,11 @@
 import React from 'react';
+import Navigation from "../Shared/Navigation/Navigation";
 
 const Home = () => {
     return (
         <div>
-             <h2>Welcome Home</h2>
+            <Navigation/>
+             <h2>Doctor's Portal</h2>
         </div>
     );
 };
