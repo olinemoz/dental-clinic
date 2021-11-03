@@ -1,6 +1,7 @@
 import './App.css';
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import Home from "./Pages/Home/Home/Home";
+import Appointment from "./Pages/Appointment/Appoinment/Appointment";
 
 function App() {
     return (
@@ -11,6 +12,7 @@ function App() {
                  <Route exact path="/home" component={Home}>
                    <Redirect to="/" />
                  </Route>
+                <Route exact path="/appointment" component={Appointment}/>
             </Switch>
           </Router>
         </div>
