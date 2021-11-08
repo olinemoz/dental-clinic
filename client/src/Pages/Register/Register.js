@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
 import {Alert, CircularProgress, Container, Grid, TextField, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
-import {NavLink} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import login from "../../images/login.png";
 import useAuth from "../../hooks/useAuth";
 
 const Register = () => {
     const [loginData, setLoginData] = useState({})
     const {user, registerUser, isLoading, error} = useAuth()
+    const history = useHistory()
+
     const handleOnChange = event => {
         const name = event.target.name
         const value = event.target.value
@@ -17,12 +19,12 @@ const Register = () => {
             [name]: value
         })
     }
-    const handleLoginSubmit = event => {
+    const handleRegistration = event => {
         if (loginData.password !== loginData.password2) {
             alert('password did not matched! try again.')
             return
         }
-        registerUser(loginData.email, loginData.password)
+        registerUser(loginData.email, loginData.password, history, loginData.name)
         event.preventDefault();
     }
     return (
@@ -35,7 +37,17 @@ const Register = () => {
 
                     {
                         !isLoading &&
-                        <form onSubmit={handleLoginSubmit}>
+                        <form onSubmit={handleRegistration}>
+                            <TextField
+                                sx={{width: '75%', m: 1}}
+                                id="standard-basic0"
+                                label="Your Name"
+                                variant="standard"
+                                name="name"
+                                type="text"
+                                required={true}
+                                onChange={(event) => handleOnChange(event)}
+                            />
                             <TextField
                                 sx={{width: '75%', m: 1}}
                                 id="standard-basic1"
@@ -43,6 +55,7 @@ const Register = () => {
                                 variant="standard"
                                 name="email"
                                 type="email"
+                                required={true}
                                 onChange={(event) => handleOnChange(event)}
                             />
                             <TextField
@@ -66,7 +79,7 @@ const Register = () => {
                                 name="password2"
                                 onChange={(event) => handleOnChange(event)}
                             />
-                            <Button sx={{width: '75%', m: 1}} variant="contained" type="submit">Login</Button>
+                            <Button sx={{width: '75%', m: 1}} variant="contained" type="submit">Register</Button>
 
 
                             <NavLink to="/login" style={{textDecoration: "none"}}>

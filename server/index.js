@@ -21,7 +21,15 @@ async function run() {
     try {
         await client.connect();
         console.log("Database Connected Successfully!")
+        const database = client.db("doctor's_portal");
+        const appointmentCollections = database.collection("appointments");
 
+        // Api Operations
+        app.post('/appointments', async (req, res) => {
+            const appointment = req.body
+            const result = await appointmentCollections.insertOne(appointment);
+            res.json(result)
+        })
 
     } finally {
         // await client.close();

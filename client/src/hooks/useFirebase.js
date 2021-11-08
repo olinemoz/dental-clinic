@@ -5,7 +5,10 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
-    onAuthStateChanged
+    onAuthStateChanged,
+    GoogleAuthProvider,
+    signInWithPopup,
+    updateProfile
 } from "firebase/auth";
 
 
@@ -16,10 +19,12 @@ const useFirebase = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     const auth = getAuth();
-    const registerUser = (email, password) => {
+    const registerUser = (email, password, history, name) => {
         setIsLoading(true)
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
+                updateUserName(name)
+                history.replace('/')
                 setError("")
             })
             .catch((error) => {
@@ -28,6 +33,16 @@ const useFirebase = () => {
             .finally(() => {
                 setIsLoading(false)
             })
+    }
+
+    const updateUserName = (name) => {
+        updateProfile(auth.currentUser, {
+            displayName: name
+        }).then(() => {
+            setError("")
+        }).catch((error) => {
+            setError(error.message)
+        });
     }
 
     const loginUser = (email, password, location, history) => {
@@ -46,6 +61,22 @@ const useFirebase = () => {
             .finally(() => {
                 setIsLoading(false)
             });
+    }
+
+    const handleGoogleSignedIn = (location, history) => {
+        setIsLoading(true)
+        const googleProvider = new GoogleAuthProvider();
+        signInWithPopup(auth, googleProvider)
+            .then((result) => {
+                const destination = location.state?.from || '/'
+                history.replace(destination)
+                setError("")
+            }).catch((error) => {
+            setError(error.message)
+        })
+            .finally(() => {
+                setIsLoading(false)
+            })
     }
 
     const logOut = () => {
@@ -74,7 +105,8 @@ const useFirebase = () => {
         loginUser,
         logOut,
         error,
-        isLoading
+        isLoading,
+        handleGoogleSignedIn
     }
 };
 

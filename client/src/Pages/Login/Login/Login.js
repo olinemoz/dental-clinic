@@ -7,7 +7,7 @@ import useAuth from "../../../hooks/useAuth";
 
 const Login = () => {
     const [loginData, setLoginData] = useState({})
-    const {user, loginUser, isLoading, error} = useAuth()
+    const {user, loginUser, isLoading, error, handleGoogleSignedIn} = useAuth()
     const location = useLocation()
     const history = useHistory()
 
@@ -20,10 +20,15 @@ const Login = () => {
         })
     }
 
-    const handleSubmit = event => {
+    const handleLoginSubmit = event => {
         loginUser(loginData.email, loginData.password, location, history)
         event.preventDefault();
     }
+
+    const handleGoogleLogin = () => {
+        handleGoogleSignedIn(location, history)
+    }
+
     return (
         <Container>
             <Grid container spacing={2}>
@@ -33,7 +38,7 @@ const Login = () => {
                     </Typography>
 
                     {
-                        !isLoading && <form onSubmit={handleSubmit}>
+                        !isLoading && <form onSubmit={handleLoginSubmit}>
                             <TextField
                                 sx={{width: '75%', m: 1}}
                                 id="standard-basic1"
@@ -60,6 +65,12 @@ const Login = () => {
                             </NavLink>
                         </form>
                     }
+                    <p>-------------</p>
+                    {
+                        !isLoading &&
+                        <Button variant="contained" onClick={handleGoogleLogin}>Google Sign In</Button>
+                    }
+
                     {
                         isLoading && <CircularProgress/>
                     }
