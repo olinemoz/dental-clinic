@@ -25,11 +25,22 @@ async function run() {
         const appointmentCollections = database.collection("appointments");
 
         // Api Operations
+
+        app.get('/appointments', async (req, res) => {
+            const email = req.query.email;
+            const date = new Date(req.query.date).toLocaleDateString()
+            const query = {email: email, date: date}
+            const cursor = appointmentCollections.find(query);
+            const appointments = await cursor.toArray()
+            res.json(appointments)
+        })
+
         app.post('/appointments', async (req, res) => {
             const appointment = req.body
             const result = await appointmentCollections.insertOne(appointment);
             res.json(result)
         })
+
 
     } finally {
         // await client.close();
