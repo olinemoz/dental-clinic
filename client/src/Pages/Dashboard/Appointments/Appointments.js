@@ -10,20 +10,24 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 const Appointments = ({date}) => {
-    const {user} = useAuth()
+    const {user, token} = useAuth()
     const [appointments, setAppointments] = useState([])
 
     useEffect(() => {
-        const url = `http://localhost:5000/appointments?email=${user.email}&date=${date}`
-        axios.get(url)
+        const url = `http://localhost:5000/appointments?email=${user.email}&date=${date.toLocaleDateString()}`
+        axios.get(url, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
             .then(response => setAppointments(response.data))
-    }, [user.email, date])
+    }, [user.email, date, token])
 
     return (
         <div>
             <h2>Appointments: {appointments.length}</h2>
             <TableContainer component={Paper}>
-                <Table  aria-label="Appointments table">
+                <Table aria-label="Appointments table">
                     <TableHead>
                         <TableRow>
                             <TableCell>Patient Name</TableCell>
