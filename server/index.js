@@ -20,9 +20,10 @@ app.use(express.json());
 async function run() {
     try {
         await client.connect();
-        console.log("Database Connected Successfully!")
+        // console.log("Database Connected Successfully!")
         const database = client.db("doctor's_portal");
         const appointmentCollections = database.collection("appointments");
+        const usersCollections = database.collection("users");
 
         // Api Operations
 
@@ -40,6 +41,22 @@ async function run() {
             const result = await appointmentCollections.insertOne(appointment);
             res.json(result)
         })
+
+        app.post('/users', async (req, res) => {
+            const user = req.body
+            const result = await usersCollections.insertOne(user);
+            res.json(result)
+        })
+
+        app.put('/users', async (req, res) => {
+                const user = req.body
+                const filter = {email: user.email}
+                const options = {upsert: true}
+                const updateDoc = {$set: user}
+                const result = await usersCollections.updateOne(filter, updateDoc, options)
+                res.json(result)
+            }
+        )
 
 
     } finally {

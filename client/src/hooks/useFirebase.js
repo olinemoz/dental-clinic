@@ -10,6 +10,7 @@ import {
     signInWithPopup,
     updateProfile
 } from "firebase/auth";
+import axios from "axios";
 
 
 initializeFirebase()
@@ -24,6 +25,7 @@ const useFirebase = () => {
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 updateUserName(name)
+                saveUser(email, name)
                 history.replace('/')
                 setError("")
             })
@@ -68,6 +70,8 @@ const useFirebase = () => {
         const googleProvider = new GoogleAuthProvider();
         signInWithPopup(auth, googleProvider)
             .then((result) => {
+                const user = result.user
+                saveGoogleUser(user.email, user.displayName)
                 const destination = location.state?.from || '/'
                 history.replace(destination)
                 setError("")
@@ -84,6 +88,18 @@ const useFirebase = () => {
         }).catch((error) => {
             setError(error.message)
         });
+    }
+
+    const saveUser = (email, displayName) => {
+        const user = {email, displayName}
+        axios.post(`http://localhost:5000/users`, user)
+            .then(response => console.log(response))
+    }
+
+    const saveGoogleUser = (email, displayName) => {
+        const user = {email, displayName}
+        axios.put(`http://localhost:5000/users`, user)
+            .then(response => console.log("Update api", response))
     }
 
     useEffect(() => {
