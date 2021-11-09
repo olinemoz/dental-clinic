@@ -93,13 +93,13 @@ const useFirebase = () => {
     const saveUser = (email, displayName) => {
         const user = {email, displayName}
         axios.post(`http://localhost:5000/users`, user)
-            .then(response => console.log(response))
+            .then()
     }
 
     const saveGoogleUser = (email, displayName) => {
         const user = {email, displayName}
         axios.put(`http://localhost:5000/users`, user)
-            .then(response => console.log("Update api", response))
+            .then()
     }
 
     useEffect(() => {

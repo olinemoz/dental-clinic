@@ -18,10 +18,10 @@ function App() {
                         <Route exact path="/home" component={Home}>
                             <Redirect to="/"/>
                         </Route>
-                        <PrivateRoute exact path="/appointment">
+                        <PrivateRoute  path="/appointment">
                             <Appointment/>
                         </PrivateRoute>
-                        <PrivateRoute exact path="/dashboard">
+                        <PrivateRoute  path="/dashboard">
                             <Dashboard/>
                         </PrivateRoute>
                         <Route exact path="/login" component={Login}/>

@@ -1,54 +1,45 @@
-import React, {useState} from 'react';
+import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import {Grid} from "@mui/material";
-import Calendar from "../../Shared/Calendar/Calendar";
-import Appointments from "../Appointments/Appointments";
-import Button from "@mui/material/Button";
-import {Link} from "react-router-dom";
+import {
+    Switch,
+    Route,
+    Link,
+    useRouteMatch
+} from "react-router-dom";
+import {Button} from '@mui/material';
+import DashboardHome from '../DashboardHome/DashboardHome';
+import MakeAdmin from "./MakeAdmin";
+import AddDoctor from "./AddDoctor";
+
 
 const drawerWidth = 200;
 
 function Dashboard(props) {
     const {window} = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
-    const [date, setDate] = useState(new Date());
-
+    let {path, url} = useRouteMatch();
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-
 
     const drawer = (
         <div>
             <Toolbar/>
             <Divider/>
-            <Link to="/appointment" style={{textDecoration: 'none'}}>
-                <Button color="inherit">APPOINTMENT</Button>
-            </Link>
-            <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon>
-                            {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
-                        </ListItemIcon>
-                        <ListItemText primary={text}/>
-                    </ListItem>
-                ))}
-            </List>
+            <Link to="/appointment"><Button color="inherit">Appointment</Button></Link>
+            <Link to={`${url}`}><Button color="inherit">Dashboard</Button></Link>
+            <Box>
+                <Link to={`${url}/makeAdmin`}><Button color="inherit">Make Admin</Button></Link>
+                <Link to={`${url}/addDoctor`}><Button color="inherit">Add Doctor</Button></Link>
+            </Box>
         </div>
     );
 
@@ -75,7 +66,7 @@ function Dashboard(props) {
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Appointments
+                        Dashboard
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -115,19 +106,23 @@ function Dashboard(props) {
                 sx={{flexGrow: 1, p: 3, width: {sm: `calc(100% - ${drawerWidth}px)`}}}
             >
                 <Toolbar/>
-                <Typography paragraph>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={5}>
-                            <Calendar date={date} setDate={setDate}/>
-                        </Grid>
-                        <Grid item xs={12} md={7}>
-                            <Appointments date={date}/>
-                        </Grid>
-                    </Grid>
-                </Typography>
+
+                <Switch>
+                    <Route exact path={path}>
+                        <DashboardHome/>
+                    </Route>
+                    <Route path={`${path}/makeAdmin`}>
+                        <MakeAdmin/>
+                    </Route>
+                    <Route path={`${path}/addDoctor`}>
+                        <AddDoctor/>
+                    </Route>
+                </Switch>
+
             </Box>
         </Box>
     );
 }
+
 
 export default Dashboard;
