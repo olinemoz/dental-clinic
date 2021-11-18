@@ -7,6 +7,7 @@ const cors = require('cors');
 require('dotenv').config()
 const ObjectId = require('mongodb').ObjectId;
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
+const fileUpload = require('express-fileupload')
 
 
 const PORT = process.env.PORT || 5000
@@ -24,6 +25,7 @@ const client = new MongoClient(url, {useNewUrlParser: true, useUnifiedTopology: 
 // Middlewares
 app.use(cors())
 app.use(express.json());
+app.use(fileUpload())
 
 async function verifyToken(req, res, next) {
     if (req.headers.authorization?.startsWith('Bearer ')) {
@@ -47,6 +49,7 @@ async function run() {
         const database = client.db("doctor's_portal");
         const appointmentCollections = database.collection("appointments");
         const usersCollections = database.collection("users");
+        const doctorsCollections = database.collection("doctors");
 
         // Api Operations
 
@@ -75,7 +78,7 @@ async function run() {
         app.put('/appointments/:id', async (req, res) => {
             const id = req.params.id;
             const payment = req.body;
-            const filter = { _id: ObjectId(id) };
+            const filter = {_id: ObjectId(id)};
             const updateDoc = {
                 $set: {
                     payment: payment
@@ -138,6 +141,36 @@ async function run() {
             });
             res.json({clientSecret: paymentIntent.client_secret})
         })
+
+        // Doctors
+        app.get('/doctors', async (req, res) => {
+            const cursor = doctorsCollections.find({});
+            const doctors = await cursor.toArray();
+            res.json(doctors);
+        });
+
+        app.get('/doctors/:id', async (req, res) => {
+            const query = {_id: ObjectId(req.params.id)}
+            const doctor = await doctorsCollections.findOne(query);
+            res.json(doctor);
+        });
+
+        app.post('/doctors', async (req, res) => {
+            const name = req.body.name;
+            const email = req.body.email;
+            const pic = req.files.image;
+            const picData = pic.data;
+            const encodedPic = picData.toString('base64');
+            const imageBuffer = Buffer.from(encodedPic, 'base64');
+            const doctor = {
+                name,
+                email,
+                image: imageBuffer
+            }
+            const result = await doctorsCollections.insertOne(doctor);
+            res.json(result);
+        })
+
 
     } finally {
         // await client.close();
