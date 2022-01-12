@@ -50,6 +50,7 @@ async function run() {
         const appointmentCollections = database.collection("appointments");
         const usersCollections = database.collection("users");
         const doctorsCollections = database.collection("doctors");
+        const availableAppointmentsCollection = database.collection("availableAppointments");
 
         // Api Operations
 
@@ -170,6 +171,12 @@ async function run() {
             const result = await doctorsCollections.insertOne(doctor);
             res.json(result);
         })
+
+        app.get('/availableAppointments', async (req, res) => {
+            const cursor = availableAppointmentsCollection.find({});
+            const availableAppointments = await cursor.toArray();
+            res.json(availableAppointments);
+        });
 
 
     } finally {

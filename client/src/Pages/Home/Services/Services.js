@@ -11,17 +11,17 @@ import Typography from "@mui/material/Typography";
 const services = [
     {
         name: 'Fluoride Treatment',
-        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed culpa cumque enim! Voluptatibus aliquid expedita saepe accusantium itaque ducimus rem voluptas',
+        description: 'Fluoride treatments are typically professional treatments containing a high concentration of fluoride that a dentist or hygienist will apply to a person\'s teeth to improve health and reduce the risk of cavities.',
         img: fluoride
     },
     {
         name: 'Cavity Filling',
-        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed culpa cumque enim! Voluptatibus aliquid expedita saepe accusantium itaque ducimus rem voluptas',
+        description: 'Fillings treat tooth decay, preventing further damage and tooth loss, as well as the possibility of pain and infection. A filling seals a hole, or cavity, in the tooth.',
         img: cavity
     },
     {
         name: 'Teeth Whitening',
-        description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed culpa cumque enim! Voluptatibus aliquid expedita saepe accusantium itaque ducimus rem voluptas',
+        description: 'Teeth whitening involves bleaching your teeth to make them lighter. It can\'t make your teeth brilliant white, but it can lighten the existing colour by several shades.',
         img: whitening
     }
 ]

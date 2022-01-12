@@ -21,11 +21,13 @@ import AddDoctor from "./AddDoctor";
 import useAuth from "../../../hooks/useAuth";
 import AdminRoute from "../../Login/Login/AdminRoute/AdminRoute";
 import Payment from "./Payment/Payment";
+import {makeStyles} from "@mui/styles";
 
 
 const drawerWidth = 200;
 
 function Dashboard(props) {
+    const {user} = useAuth()
     const {window} = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
     let {path, url} = useRouteMatch();
@@ -33,23 +35,51 @@ function Dashboard(props) {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+    const useStyles = makeStyles({
+        mobileNavItem: {
+            textDecoration: 'none',
+            color: 'black'
+        }
+    })
+
+    const {mobileNavItem} = useStyles()
 
     const drawer = (
         <div>
             <Toolbar/>
             <Divider/>
-            <NavLink to="/appointment" style={{textDecoration: 'none', color: 'black'}}>
+            <Typography className={mobileNavItem}>
+                <Button color="inherit">
+                    {
+                        (user?.email || user?.displayName) && <>
+                            Hello, {user?.displayName}
+                        </>
+                    }
+                </Button>
+            </Typography>
+            <NavLink to="/" className={mobileNavItem}>
+                <Button color="inherit">Home</Button>
+            </NavLink> <br/>
+            <NavLink to="/appointment" className={mobileNavItem}
+                     style={isActive => ({color: isActive ? "blue" : "gray"})}
+            >
                 <Button color="inherit">Appointment</Button>
             </NavLink>
-            <NavLink to={`${url}`} style={{textDecoration: 'none', color: 'black'}}>
+            <NavLink to={`${url}`} className={mobileNavItem}
+                     style={isActive => ({color: isActive ? "blue" : "gray"})}
+            >
                 <Button color="inherit">Dashboard</Button>
             </NavLink>
             {
                 admin && <Box>
-                    <NavLink to={`${url}/makeAdmin`} style={{textDecoration: 'none', color: 'black'}}>
+                    <NavLink to={`${url}/makeAdmin`} className={mobileNavItem}
+                             style={isActive => ({color: isActive ? "blue" : "gray"})}
+                    >
                         <Button color="inherit">Make Admin</Button>
                     </NavLink>
-                    <NavLink to={`${url}/addDoctor`} style={{textDecoration: 'none', color: 'black'}}>
+                    <NavLink to={`${url}/addDoctor`} className={mobileNavItem}
+                             style={isActive => ({color: isActive ? "blue" : "gray"})}
+                    >
                         <Button color="inherit">Add Doctor</Button>
                     </NavLink>
                 </Box>
@@ -68,6 +98,7 @@ function Dashboard(props) {
                     width: {sm: `calc(100% - ${drawerWidth}px)`},
                     ml: {sm: `${drawerWidth}px`},
                 }}
+                style={{backgroundColor: '#302D2C'}}
             >
                 <Toolbar>
                     <IconButton
@@ -84,6 +115,7 @@ function Dashboard(props) {
                     </Typography>
                 </Toolbar>
             </AppBar>
+
             <Box
                 component="nav"
                 sx={{width: {sm: drawerWidth}, flexShrink: {sm: 0}}}

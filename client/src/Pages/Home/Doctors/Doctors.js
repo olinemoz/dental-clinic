@@ -12,19 +12,23 @@ const Doctors = () => {
     }, [])
 
     return (
-        <div>
-            <h2>Our Doctors: </h2>
-            <Container>
-                <Grid container spacing={2}>
-                    {
-                        doctors.map(doctor => <Doctor
-                            key={doctor._id}
-                            doctor={doctor}
-                        />)
-                    }
-                </Grid>
-            </Container>
-        </div>
+        <>
+            {
+                doctors.length > 0 ? <div>
+                    <h2>Our Doctors: </h2>
+                    <Container>
+                        <Grid container spacing={2}>
+                            {
+                                doctors.map(doctor => <Doctor
+                                    key={doctor._id}
+                                    doctor={doctor}
+                                />)
+                            }
+                        </Grid>
+                    </Container>
+                </div> : ''
+            }
+        </>
     );
 };
 

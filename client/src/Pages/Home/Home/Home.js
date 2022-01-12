@@ -1,14 +1,14 @@
 import React from 'react';
-import Navigation from "../../Shared/Navigation/Navigation";
 import Services from "../Services/Services";
 import AppointmentBanner from "../AppointmentBanner/AppointmentBanner";
 import Banner from "../Banner/Banner";
 import Doctors from "../Doctors/Doctors";
+import Navigations from "../../Shared/Navigation/Navigations";
 
 const Home = () => {
     return (
         <div>
-            <Navigation/>
+            <Navigations/>
             <Banner/>
             <Services/>
             <Doctors/>
